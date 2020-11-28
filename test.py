@@ -1,35 +1,22 @@
 #!/home/amijaljevic/anaconda3/bin/python3
-import os
+
 import re
-os.system('clear')
 
+def show_time_of_pid(line):
+  pattern = r"^(\w{3}\s\d{1}\s[\d{2}:]* )[\w. =]*\[(\d{5})\]"
+  result = re.search(pattern, line)
+  return f"{result[1]}pid:{result[2]}"
 
-result = re.sub(r"[.?!]", "", "Love is here! Another one? This is last.")
+print(show_time_of_pid("Jul 6 14:01:23 computer.name CRON[29440]: USER (good_user)")) # Jul 6 14:01:23 pid:29440
 
-print(result)
-# print(result.groups())
-# print(result[0])
-# print(result[1])
-# print(result[2])
+print(show_time_of_pid("Jul 6 14:02:08 computer.name jam_tag=psim[29187]: (UUID:006)")) # Jul 6 14:02:08 pid:29187
 
-# print("{} {}".format(result[2], result[1]))
+print(show_time_of_pid("Jul 6 14:02:09 computer.name jam_tag=psim[29187]: (UUID:007)")) # Jul 6 14:02:09 pid:29187
 
-# def rearrange_name(name):
-#     result = re.search(r"^(\w*), (\w*)$", name)
+print(show_time_of_pid("Jul 6 14:03:01 computer.name CRON[29440]: USER (naughty_user)")) # Jul 6 14:03:01 pid:29440
 
-#     if result is None:
-#         return name
+print(show_time_of_pid("Jul 6 14:03:40 computer.name cacheclient[29807]: start syncing from \"0xDEADBEEF\"")) # Jul 6 14:03:40 pid:29807
 
-#     return "{} {}".format(result[2], result[1])
+print(show_time_of_pid("Jul 6 14:04:01 computer.name CRON[29440]: USER (naughty_user)")) # Jul 6 14:04:01 pid:29440
 
-# print(rearrange_name("Lovelace, Ada"))
-
-# print(rearrange_name("Ritchie, Dennis"))
-
-# print(rearrange_name("Hopper, Grace M."))
-
-regex = r"\[(\d+)\]"
-
-result = re.search(regex, "a scary [cat] ghost appeared")
-
-print(result)
+print(show_time_of_pid("Jul 6 14:05:01 computer.name CRON[29440]: USER (naughty_user)")) # Jul 6 14:05:01 pid:29440
