@@ -1,2 +1,1 @@
-#!/home/amijaljevic/anaconda3/bin/python3
-
+#!/usr/bin/python3
