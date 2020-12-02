@@ -48,16 +48,28 @@ import re
 import operator
 
 
-#list all error messages and how many each appears
+#ERRORS
+errors = {}
+
+#open log file, slice, count
 with open("syslog.log") as log:
     log = log.readlines()
 
     for line in log:
         if "ERROR" in line:
             sliceErrors = re.search(r"ERROR ([\w' ]*)", line)
-            print(sliceErrors[1].strip())
+            if sliceErrors[1] in errors:
+                errors[sliceErrors[1]] += 1
+            else:
+                errors[sliceErrors[1]] = 1
 
+#sort errors from highest to lowest
+errors = dict(sorted(errors.items(), key = operator.itemgetter(1), reverse=True))
+# print(errors)
 
+#create csv from sorted dictionary
+for key, value in errors.items():
+    print(key+" "+str(value))
 
 
 #list all ldaps and how many info and how many error they had in total
@@ -66,7 +78,7 @@ with open("syslog.log") as log:
 
     for line in log:
         sliceLdaps = re.search(r"\((\w.*)\)$", line)
-        print(sliceLdaps[1].strip())
+        # print(sliceLdaps[1].strip())
 
 
 
