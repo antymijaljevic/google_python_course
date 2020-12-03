@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import os
 import csv
 import re
 import operator
+import subprocess
 
 def errorCounter():
     errors = {}
@@ -31,17 +31,27 @@ def errorCounter():
         for key, value in errorsHeader.items():
             csv_writer.writerow([key.strip(), value])
 
-def ldapErrorInfoCounter():
+def userStatistics():
     pass
 
 
 def createHtml():
-    pass
+    #generate html file for error messages
+    # argsError = ["./csv_to_html.py", "error_message.csv", "/var/www/html/errorIndex.html"] # activeate afer
+    args = ["./csv_to_html.py", "error_message.csv", "/home/amijaljevic/Desktop/errorIndex.html"] # remove later
+    subprocess.check_call(args)
+
+    #generate html file for user statistics
+    args[1] = "user_statistics.csv"
+    # args[2] = "/var/www/html/usersIndex.html" #activate later
+    args[2] = "/home/amijaljevic/Desktop/usersIndex.html" # remove later
+    # subprocess.check_call(args)
+
+    
 
 errorCounter()
-ldapErrorInfoCounter()
+userStatistics()
 createHtml()
-
 
 
 # #list all ldaps and how many info and how many error they had in total
