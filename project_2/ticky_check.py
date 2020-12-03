@@ -1,5 +1,60 @@
 #!/usr/bin/env python3
 
+import os
+import csv
+import re
+import operator
+
+def errorCounter():
+    errors = {}
+    #open log file, slice, count
+    with open("syslog.log") as log:
+        log = log.readlines()
+
+        for line in log:
+            if "ERROR" in line:
+                sliceErrors = re.search(r"ERROR ([\w' ]*)", line)
+                if sliceErrors[1] in errors:
+                    errors[sliceErrors[1]] += 1
+                else:
+                    errors[sliceErrors[1]] = 1
+
+    #sort errors from highest to lowest
+    errors = dict(sorted(errors.items(), key = operator.itemgetter(1), reverse=True))
+
+    #create csv from sorted dictionary
+    header = ['Error', 'Count']
+    with open('error_message.csv', mode='w') as error_csv_file:
+        csv_writer = csv.writer(error_csv_file)
+        csv_writer.writerow(header)
+
+        for key, value in errors.items():
+            csv_writer.writerow([key.strip(), value]) #fix strip()
+
+def ldapErrorInfoCounter():
+    pass
+
+
+def createHtml():
+    pass
+
+def main():
+    errorCounter()
+    ldapErrorInfoCounter()
+    createHtml()
+
+if __name__ == "__main__":
+    main()
+
+
+# #list all ldaps and how many info and how many error they had in total
+# with open("syslog.log") as log:
+#     log = log.readlines()
+
+#     for line in log:
+#         sliceLdaps = re.search(r"\((\w.*)\)$", line)
+#         # print(sliceLdaps[1].strip())
+
 #INFO/ERROR
 
 # POSSIBLE ERRORS:
@@ -38,56 +93,3 @@
 # that have used the system, including how many info messages and
 # how many error messages they've generated. This report is sorted 
 # by username. FILE: user_statistics.csv
-
-
-#import all the shit
-import os
-import csv
-import re
-import operator
-
-
-#ERRORS
-errors = {}
-
-#open log file, slice, count
-with open("syslog.log") as log:
-    log = log.readlines()
-
-    for line in log:
-        if "ERROR" in line:
-            sliceErrors = re.search(r"ERROR ([\w' ]*)", line)
-            if sliceErrors[1] in errors:
-                errors[sliceErrors[1]] += 1
-            else:
-                errors[sliceErrors[1]] = 1
-
-#sort errors from highest to lowest
-errors = dict(sorted(errors.items(), key = operator.itemgetter(1), reverse=True))
-print(errors)
-
-#create csv from sorted dictionary
-header = ['Error', 'Count']
-
-with open('error_message.csv', mode='w') as error_csv_file:
-    csv_writer = csv.writer(error_csv_file)
-    csv_writer.writerow(header)
-
-    for key, value in errors.items():
-        print(key, value)
-        csv_writer.writerow([key.strip(), value]) #fix strip()
-
-
-
-# #list all ldaps and how many info and how many error they had in total
-# with open("syslog.log") as log:
-#     log = log.readlines()
-
-#     for line in log:
-#         sliceLdaps = re.search(r"\((\w.*)\)$", line)
-#         # print(sliceLdaps[1].strip())
-
-
-
-# #sort ldaps in list
-# sorted(theList, key=operator.itemgetter(0))
