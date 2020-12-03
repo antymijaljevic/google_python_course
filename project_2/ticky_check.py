@@ -38,13 +38,10 @@ def ldapErrorInfoCounter():
 def createHtml():
     pass
 
-def main():
-    errorCounter()
-    ldapErrorInfoCounter()
-    createHtml()
+errorCounter()
+ldapErrorInfoCounter()
+createHtml()
 
-if __name__ == "__main__":
-    main()
 
 
 # #list all ldaps and how many info and how many error they had in total
