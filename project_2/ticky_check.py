@@ -5,39 +5,71 @@ import re
 import operator
 import subprocess
 
+
 def errorCounter():
-    errors = {}
+    errorsDict = {}
     #open log file, slice, count
     with open("syslog.log") as log:
         log = log.readlines()
 
         for line in log:
             if "ERROR" in line:
+                #search for ticket title
                 sliceErrors = re.search(r"ERROR ([\w' ]*)", line)
-                if sliceErrors[1] in errors:
-                    errors[sliceErrors[1]] += 1
+                if sliceErrors[1] in errorsDict:
+                    errorsDict[sliceErrors[1]] += 1
                 else:
-                    errors[sliceErrors[1]] = 1
+                    errorsDict[sliceErrors[1]] = 1
 
     #sort errors from highest to lowest, add header
-    errors = dict(sorted(errors.items(), key = operator.itemgetter(1), reverse=True))
-    errorsHeader = {'Error': 'Count'}
-    errorsHeader.update(errors)
+    errorsDict = dict(sorted(errorsDict.items(), key = operator.itemgetter(1), reverse=True))
+    header = {'Error': 'Count'}
+    header.update(errorsDict)
 
     #create csv from sorted dictionary
     with open('error_message.csv', mode='w') as error_csv_file:
         csv_writer = csv.writer(error_csv_file)
 
-        for key, value in errorsHeader.items():
+        for key, value in header.items():
             csv_writer.writerow([key.strip(), value])
 
+
 def userStatistics():
-    pass
+    ldapDict = {"Username":["INFO", "ERROR"]}
+    #open log file, slice, count
+    with open("syslog.log") as log:
+        log = log.readlines()
+        
+        for line in log:
+            #search for ldap
+            ldap = re.search(r"\((\w.*)\)$", line)
+            if "INFO" in line:
+                if ldap[1].strip() in ldapDict:
+                    ldapDict[ldap[1].strip()][0] += 1
+                else:
+                    ldapDict[ldap[1].strip()] = [0, 0]
+                    ldapDict[ldap[1].strip()][0] = 1
+            elif "ERROR" in line:
+                if ldap[1].strip() in ldapDict:
+                    ldapDict[ldap[1].strip()][1] += 1
+                else:
+                    ldapDict[ldap[1].strip()] = [0, 0]
+                    ldapDict[ldap[1].strip()][1] = 1
+
+    #sort ldaps by alphabetical order
+    ldapDict = dict(sorted(ldapDict.items(), key = operator.itemgetter(0)))
+
+    #create csv from sorted dictionary
+    with open('user_statistics.csv', mode='w') as user_statistics_file:
+        csv_writer = csv.writer(user_statistics_file)
+
+        for key, value in ldapDict.items():
+            csv_writer.writerow([key, value[0], value[1]])
 
 
 def createHtml():
     #generate html file for error messages
-    # argsError = ["./csv_to_html.py", "error_message.csv", "/var/www/html/errorIndex.html"] # activeate afer
+    # args = ["./csv_to_html.py", "error_message.csv", "/var/www/html/errorIndex.html"] # activeate afer
     args = ["./csv_to_html.py", "error_message.csv", "/home/amijaljevic/Desktop/errorIndex.html"] # remove later
     subprocess.check_call(args)
 
@@ -45,23 +77,14 @@ def createHtml():
     args[1] = "user_statistics.csv"
     # args[2] = "/var/www/html/usersIndex.html" #activate later
     args[2] = "/home/amijaljevic/Desktop/usersIndex.html" # remove later
-    # subprocess.check_call(args)
+    subprocess.check_call(args)
 
-    
 
 errorCounter()
 userStatistics()
 createHtml()
 
-
-# #list all ldaps and how many info and how many error they had in total
-# with open("syslog.log") as log:
-#     log = log.readlines()
-
-#     for line in log:
-#         sliceLdaps = re.search(r"\((\w.*)\)$", line)
-#         # print(sliceLdaps[1].strip())
-
+#---------------------------------------------------------------------------------------------
 #INFO/ERROR
 
 # POSSIBLE ERRORS:
