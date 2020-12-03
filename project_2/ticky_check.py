@@ -19,17 +19,17 @@ def errorCounter():
                 else:
                     errors[sliceErrors[1]] = 1
 
-    #sort errors from highest to lowest
+    #sort errors from highest to lowest, add header
     errors = dict(sorted(errors.items(), key = operator.itemgetter(1), reverse=True))
+    errorsHeader = {'Error': 'Count'}
+    errorsHeader.update(errors)
 
     #create csv from sorted dictionary
-    header = ['Error', 'Count']
     with open('error_message.csv', mode='w') as error_csv_file:
         csv_writer = csv.writer(error_csv_file)
-        csv_writer.writerow(header)
 
-        for key, value in errors.items():
-            csv_writer.writerow([key.strip(), value]) #fix strip()
+        for key, value in errorsHeader.items():
+            csv_writer.writerow([key.strip(), value])
 
 def ldapErrorInfoCounter():
     pass
