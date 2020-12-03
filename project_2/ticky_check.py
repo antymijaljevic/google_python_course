@@ -70,7 +70,7 @@ print(errors)
 header = ['Error', 'Count']
 
 with open('error_message.csv', mode='w') as error_csv_file:
-    csv_writer = csv.writer(error_csv_file, delimiter = ',')
+    csv_writer = csv.writer(error_csv_file)
     csv_writer.writerow(header)
 
     for key, value in errors.items():
