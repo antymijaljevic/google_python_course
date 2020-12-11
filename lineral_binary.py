@@ -5,28 +5,32 @@ def linear_search(list, key):
        otherwise returns -1."""
     for i, item in enumerate(list):
         if item == key:
-            print(i)
-    return -1
+            return i
+    return None
 
 def binary_search(list, key):
     """Returns the position of key in the list if found, -1 otherwise.
-
     List must be sorted.
     """
+    slist = sorted(list) #must be sorted
+    print(slist)
     left = 0
-    right = len(list) - 1
+    right = len(slist) - 1 #20 elements
     while left <= right:
         middle = (left + right) // 2
+        print(f"This is middle in list: {middle}")
         
-        if list[middle] == key:
-            return middle
-        if list[middle] > key:
+        if slist[middle] == key:
+            return "Got it!", middle
+        if slist[middle] > key:
             right = middle - 1
-        if list[middle] < key:
+            print(right)
+        if slist[middle] < key:
             left = middle + 1
-    return -1
+            print(left)
+    return None
 
-thislist = ["apple", "banana", "cherry", "kiwi", "cherry", "radish", "scallion bunch"]
+thislist = ["apple", "banana", "cherry", "kiwi", "cherry", "radish", "scallion bunch", 'Apple Pie', 'Bacon', 'Chicken Pie', 'Chickpeas', 'Eggs', 'Milk', 'Pudding', 'Pulses', 'Rice', 'Rice Cooker', 'Sauce', 'bread', 'meat']
 
-linear_search(thislist, "cherry")
-binary_search(thislist, "banana")
+# print(linear_search(thislist, "banana"))
+print(binary_search(thislist, "Eggs"))
