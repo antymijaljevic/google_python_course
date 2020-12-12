@@ -18,7 +18,7 @@ def binary_search(list, key):
     right = len(slist) - 1 #20 elements
     while left <= right:
         middle = (left + right) // 2
-        print(f"This is middle in list: {middle}")
+        print(f"This is middle in list: {middle}, {slist[middle]}")
         
         if slist[middle] == key:
             return "Got it!", middle
@@ -32,5 +32,40 @@ def binary_search(list, key):
 
 thislist = ["apple", "banana", "cherry", "kiwi", "cherry", "radish", "scallion bunch", 'Apple Pie', 'Bacon', 'Chicken Pie', 'Chickpeas', 'Eggs', 'Milk', 'Pudding', 'Pulses', 'Rice', 'Rice Cooker', 'Sauce', 'bread', 'meat']
 
-# print(linear_search(thislist, "banana"))
-print(binary_search(thislist, "Eggs"))
+print(linear_search(thislist, "banana"))
+print(binary_search(thislist, "Rice"))
+
+
+
+
+
+def find_item(list, item):
+  #Returns True if the item is in the list, False if not.
+  if len(list) == 0:
+    return False
+
+  #Is the item in the center of the list?
+  list = sorted(list)
+  middle = len(list)//2
+  if list[middle] == item:
+    return True
+
+  # print(list)
+  # print(list[middle], middle)
+  #Is the item in the first half of the list? 
+  if item < list[middle]:
+    #Call the function with the first half of the list
+    return find_item(list[:middle], item)
+  else:
+    #Call the function with the second half of the list
+    return find_item(list[middle+1:], item)
+
+  return False
+
+#Do not edit below this line - This code helps check your work!
+list_of_names = ["Parker", "Drew", "Cameron", "Logan", "Alex", "Chris", "Terry", "Jamie", "Jordan", "Taylor"]
+
+print(find_item(list_of_names, "Alex")) # True
+print(find_item(list_of_names, "Andrew")) # False
+print(find_item(list_of_names, "Drew")) # True
+print(find_item(list_of_names, "Jared")) # False
