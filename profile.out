@@ -1,0 +1,9 @@
+# callgrind format
+version: 1
+creator: pprofile
+event: usphit :microseconds/hit
+events: hits microseconds usphit
+cmd: ./time.py
+fl=./time.py
+fn=<module>:3
+3 2 39 19
