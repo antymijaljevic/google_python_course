@@ -1,40 +1,29 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-import json
+import os
+import requests
 
-# people = [
-#     {
-#         "name": "Sabrina Green",
-#         "username": "sgreen",
-#         "phone": {
-#             "office": "802-867-5309",
-#             "cell": "802-867-5310"
-#         },
-#         "department": "IT Infrastructure",
-#         "role": "Systems Administrator"
-#     },
-#     {
-#         "name": "Eli Jones",
-#         "username": "ejones",
-#         "phone": {
-#             "office": "684-348-1127"
-#         },
-#         "department": "IT Infrastructure",
-#         "role": "IT Specialist"
-#     },
-# ]
 
-# with open('people.json', 'w') as people_json:
-#     json.dump(people, people_json)
+#1 | list feedbacks from dir
+for txtFile in os.listdir('/data/feedback/'):
+    # print(txtFile)
 
-# with open('people.json', 'w') as people_json:
-#     json.dump(people, people_json, indent=2)
+    #2 | Pre-setup dict, list indexing
+    feedbacks = {'title': None, 'name': None, 'date':None, 'feedback':None}
+    order = list(feedbacks)
 
-# kita = json.dumps(people)
-# print(kita)
+    #3 | open each feed back and create dict
+    with open(os.path.join('/data/feedback', txtFile)) as contentOfFile:
+        for index, line in enumerate(contentOfFile):
+            feedbacks[order[index]] = line.strip()
 
-with open('people.json', 'r') as people_json:
-    people = json.load(people_json)
+    #4 | post dict, clear dict
+    print(feedbacks)
+    response = requests.post('http://35.202.197.14/feedback', data=feedbacks)
+    feedbacks = {}
 
-print(people)
-
+    #5 | status code
+    if not response.ok:
+        response.raise_for_status()
+    else:
+        print("STATUS CODE 201 SUCCESS!")
