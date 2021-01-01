@@ -19,8 +19,7 @@
 
 # #2 | supplier_image_upload.py
 
-# import os
-# import requests
+# import os, requests
 
 # images_dir = os.path.join(os.environ['HOME'] + '/Documents/coding_projects/google_python_course/final_projects/supplier-data/images/')
 # url = "http://<linux_instance_ip/upload/"
@@ -42,8 +41,7 @@
 
 # #3 | run.py
 
-# import os
-# import requests
+# import os, requests
 
 # description_dir = os.path.join(os.environ['HOME'] + '/Documents/coding_projects/google_python_course/final_projects/supplier-data/descriptions/')
 
@@ -76,4 +74,48 @@
 #     descriptions_data = {}
 
 
-#4 | Generate a PDF report and send it through email
+#4 | reports.py
+
+import reportlab
+
+def generate_report():
+    pass
+
+#attachment argument (use ‘/tmp/processed.pdf')
+
+# Processed Update on <Today's date>
+
+# [blank line]
+
+# name: Apple
+
+# weight: 500 lbs
+
+# [blank line]
+
+# name: Avocado
+
+# weight: 200 lbs
+
+# [blank line]
+
+
+
+# 5| report_email.py
+
+import os, datetime, reports
+
+
+def main():
+    reports.generate_report(attachment, title, paragraph)
+
+if __name__ == "__main__":
+    main()
+
+
+
+# 6| emails.py
+
+
+
+# 7| health_check.py
